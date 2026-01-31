@@ -1,0 +1,170 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load dataset
+df = pd.read_csv("Telco_Customer_Churn_Dataset  (3).csv")
+
+df.head(10)
+
+df.dtypes
+
+df.isnull().sum()
+
+df.columns = (
+    df.columns
+    .str.strip()
+    .str.lower()
+    .str.replace(" ", "_")
+)
+
+df.columns
+
+df.duplicated().sum()
+
+df.isnull().sum()
+
+df.to_csv("Telco_Customer_Churn_Dataset_cleaned.csv", index=False)
+
+df = pd.read_csv("Telco_Customer_Churn_Dataset_cleaned.csv")
+
+df.describe()
+
+df["churn"].value_counts()
+
+sns.countplot(x="churn", data=df)
+plt.title("Churn Distribution")
+plt.xlabel("Churn")
+plt.ylabel("Customer Count")
+plt.show()
+
+num_cols = ["tenure", "monthlycharges", "totalcharges"]
+
+for col in num_cols:
+    plt.figure(figsize=(6,4))
+    sns.histplot(df[col], kde=True)
+    plt.title(f"Distribution of {col}")
+    plt.show()
+
+plt.figure(figsize=(6,4))
+sns.boxplot(x="churn", y="monthlycharges", data=df)
+plt.title("Monthly Charges vs Churn")
+plt.show()
+
+churn_rate = df["churn"].value_counts(normalize=True) * 100
+churn_rate
+
+bins = [0, 12, 36, df["tenure"].max()]
+labels = ["0-12 months", "13-36 months", "37+ months"]
+
+df["tenure_group"] = pd.cut(df["tenure"], bins=bins, labels=labels, include_lowest=True)
+
+df["tenure_group"].value_counts()
+
+tenure_counts = df["tenure_group"].value_counts()
+
+plt.figure(figsize=(6,6))
+plt.pie(
+    tenure_counts,
+    labels=tenure_counts.index,
+    autopct="%1.1f%%",
+    startangle=90,
+    wedgeprops=dict(width=0.4)
+)
+plt.title("Customer Distribution by Tenure Group")
+plt.show()
+
+avg_charges = df.groupby("tenure_group")["monthlycharges"].mean()
+
+plt.figure(figsize=(7,5))
+bars = plt.bar(avg_charges.index, avg_charges.values)
+
+plt.title("Average Monthly Charges by Tenure Group")
+plt.xlabel("Tenure Group")
+plt.ylabel("Average Monthly Charges")
+
+# Annotations 
+for bar in bars:
+    height = bar.get_height()
+    plt.text(
+        bar.get_x() + bar.get_width()/2,
+        height,
+        f"{height:.2f}",
+        ha="center",
+        va="bottom"
+    )
+
+plt.show()
+
+bins = [0, 12, 36, df["tenure"].max()]
+labels = ["0-12 months", "13-36 months", "37+ months"]
+
+df["tenure_group"] = pd.cut(df["tenure"], bins=bins, labels=labels, include_lowest=True)
+
+tenure_churn = (
+    df.groupby("tenure_group")["churn"]
+    .value_counts(normalize=True)
+    .unstack() * 100
+)
+
+tenure_churn
+
+tenure_churn["Yes"].plot(kind="bar", figsize=(6,4))
+plt.title("Churn Rate by Tenure Group")
+plt.ylabel("Churn Percentage")
+plt.xlabel("Tenure Group")
+plt.show()
+
+gender_churn = (
+    df.groupby("gender")["churn"]
+    .value_counts(normalize=True)
+    .unstack() * 100
+)
+
+gender_churn
+
+gender_churn["Yes"].plot(kind="bar", figsize=(5,4))
+plt.title("Churn Rate by Gender")
+plt.ylabel("Churn Percentage")
+plt.show()
+
+senior_churn = (
+    df.groupby("seniorcitizen")["churn"]
+    .value_counts(normalize=True)
+    .unstack() * 100
+)
+
+senior_churn
+
+senior_churn["Yes"].plot(kind="bar", figsize=(5,4))
+plt.title("Churn Rate by Senior Citizen Status")
+plt.ylabel("Churn Percentage")
+plt.xlabel("Senior Citizen (0 = No, 1 = Yes)")
+plt.show()
+
+contract_churn = (
+    df.groupby("contract")["churn"]
+    .value_counts(normalize=True)
+    .unstack() * 100
+)
+
+contract_churn
+
+contract_churn["Yes"].plot(kind="bar", figsize=(6,4))
+plt.title("Churn Rate by Contract Type")
+plt.ylabel("Churn Percentage")
+plt.show()
+
+payment_churn = (
+    df.groupby("paymentmethod")["churn"]
+    .value_counts(normalize=True)
+    .unstack() * 100
+)
+
+payment_churn
+
+payment_churn["Yes"].plot(kind="bar", figsize=(8,4))
+plt.title("Churn Rate by Payment Method")
+plt.ylabel("Churn Percentage")
+plt.show()
+
