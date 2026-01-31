@@ -17,7 +17,10 @@ This project focuses on analyzing customer churn data using Python to understand
 - Jupyter Notebook
 
 ## Project Structure
-The project is organized into multiple task-wise notebooks covering data understanding, cleaning, analysis, visualization, and advanced insights.
+- data/ : Raw and cleaned datasets  
+- notebooks/ : Task-wise Jupyter notebooks  
+- outputs/ : Visualizations and analysis outputs  
+- README.md : Project overview and details
 
 ## Outcome
 The analysis highlights key churn drivers such as tenure length and contract type, providing actionable insights to improve customer retention.
