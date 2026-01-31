@@ -1,2 +1,23 @@
-# customer-churn-analysis
-Customer Churn Analysis using Python (EDA, Segmentation, Visualization)
+# Customer Churn Analysis
+
+This project focuses on analyzing customer churn data using Python to understand customer behavior and identify factors that contribute to churn.
+
+## Key Objectives
+- Perform data cleaning and preprocessing
+- Conduct exploratory data analysis (EDA)
+- Segment customers based on tenure
+- Analyze churn patterns across demographics, contract types, and payment methods
+- Visualize insights to support business decision-making
+
+## Tools & Technologies
+- Python
+- Pandas
+- Matplotlib
+- Seaborn
+- Jupyter Notebook
+
+## Project Structure
+The project is organized into multiple task-wise notebooks covering data understanding, cleaning, analysis, visualization, and advanced insights.
+
+## Outcome
+The analysis highlights key churn drivers such as tenure length and contract type, providing actionable insights to improve customer retention.
